@@ -95,6 +95,24 @@ func TestImpliedBodySchema(t *testing.T) {
 		},
 		{
 			struct {
+				Thing struct {
+					Type string `hcl:"type,label"`
+					Name string `hcl:"name,label_optional"`
+				} `hcl:"thing,block"`
+			}{},
+			&hcl.BodySchema{
+				Blocks: []hcl.BlockHeaderSchema{
+					{
+						Type:          "thing",
+						LabelNames:    []string{"type", "name"},
+						LabelOptional: true,
+					},
+				},
+			},
+			false,
+		},
+		{
+			struct {
 				Thing []struct {
 					Type string `hcl:"type,label"`
 					Name string `hcl:"name,label"`
